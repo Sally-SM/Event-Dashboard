@@ -1,26 +1,29 @@
-import { User } from '../models/User';
+import { User } from "../models/User";
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
-const AUTH_TOKEN = '1|TsGcZ0VIZedIMIP2cTZrs8t5nf0azvAcMs4xO9Z2d8f868e0';
+const BASE_URL = "http://127.0.0.1:8000/api";
+const AUTH_TOKEN = "1|mK29pZHOxqRHlPguX7ANArpqNK5SmmVxKzrE73a93a5d5797";
 
 // ─── Dummy Data (Fallback) ───────────────────────────────────────────────────
-const ROLES = ['customer', 'vendor', 'admin', 'venue_owner'];
+const ROLES = ["customer", "vendor", "admin", "venue_owner"];
 
 const generateDummyUsers = () => {
   return Array.from({ length: 20 }, (_, index) => {
     const role = ROLES[Math.floor(Math.random() * ROLES.length)];
     const createdDate = new Date();
-    createdDate.setDate(createdDate.getDate() - Math.floor(Math.random() * 180));
+    createdDate.setDate(
+      createdDate.getDate() - Math.floor(Math.random() * 180),
+    );
 
     return new User({
       id: index + 1,
-      name: `User ${String.fromCharCode(65 + (index % 26))} ${['Al-Rashid', 'Johnson', 'Al-Farsi', 'Chen', 'Ibrahim', 'Hassan', 'Wilson', 'Al-Saud', 'Bakri', 'Mahmoud'][index % 10]}`,
+      name: `User ${String.fromCharCode(65 + (index % 26))} ${["Al-Rashid", "Johnson", "Al-Farsi", "Chen", "Ibrahim", "Hassan", "Wilson", "Al-Saud", "Bakri", "Mahmoud"][index % 10]}`,
       email: `user${index + 1}@example.com`,
       avatar: null,
       phone: `+966 5${Math.floor(Math.random() * 10)} ${Math.floor(1000000 + Math.random() * 9000000)}`,
       email_verified_at: Math.random() > 0.3 ? createdDate.toISOString() : null,
       role,
-      vendor_category_id: role === 'vendor' ? Math.floor(Math.random() * 12) + 1 : null,
+      vendor_category_id:
+        role === "vendor" ? Math.floor(Math.random() * 12) + 1 : null,
       created_at: createdDate.toISOString(),
       updated_at: createdDate.toISOString(),
     });
@@ -31,9 +34,9 @@ let dummyUsers = generateDummyUsers();
 
 // ─── Fetch Helper ────────────────────────────────────────────────────────────
 const getHeaders = () => ({
-  'Accept': 'application/json',
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${AUTH_TOKEN}`,
+  Accept: "application/json",
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${AUTH_TOKEN}`,
 });
 
 // ─── Service ──────────────────────────────────────────────────────────────────
@@ -48,7 +51,7 @@ export const userService = {
 
     try {
       const response = await fetch(`${BASE_URL}/admin/users`, {
-        method: 'GET',
+        method: "GET",
         headers: getHeaders(),
       });
 
@@ -58,27 +61,28 @@ export const userService = {
 
       const json = await response.json();
 
-      if (json?.status !== 'success') {
-        throw new Error(json?.message || 'API returned non-success status');
+      if (json?.status !== "success") {
+        throw new Error(json?.message || "API returned non-success status");
       }
 
       users = User.fromApiResponse(json);
     } catch (error) {
-      console.warn('API fetch failed, using dummy users:', error.message);
+      console.warn("API fetch failed, using dummy users:", error.message);
       users = [...dummyUsers];
     }
 
     // Client-side filters
-    if (filters.role && filters.role !== 'all') {
-      users = users.filter(u => u.role === filters.role);
+    if (filters.role && filters.role !== "all") {
+      users = users.filter((u) => u.role === filters.role);
     }
 
     if (filters.search) {
       const q = filters.search.toLowerCase();
-      users = users.filter(u =>
-        u.name.toLowerCase().includes(q) ||
-        u.email.toLowerCase().includes(q) ||
-        u.phone.includes(q)
+      users = users.filter(
+        (u) =>
+          u.name.toLowerCase().includes(q) ||
+          u.email.toLowerCase().includes(q) ||
+          u.phone.includes(q),
       );
     }
 
@@ -86,10 +90,11 @@ export const userService = {
       const { field, order } = filters.sortBy;
       users.sort((a, b) => {
         let cmp = 0;
-        if (field === 'name') cmp = a.name.localeCompare(b.name);
-        else if (field === 'created_at') cmp = new Date(a.createdAt) - new Date(b.createdAt);
-        else if (field === 'role') cmp = a.role.localeCompare(b.role);
-        return order === 'asc' ? cmp : -cmp;
+        if (field === "name") cmp = a.name.localeCompare(b.name);
+        else if (field === "created_at")
+          cmp = new Date(a.createdAt) - new Date(b.createdAt);
+        else if (field === "role") cmp = a.role.localeCompare(b.role);
+        return order === "asc" ? cmp : -cmp;
       });
     }
 
