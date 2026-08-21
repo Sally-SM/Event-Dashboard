@@ -1,50 +1,18 @@
-import { ServiceCategory } from "../models/ServiceCategory";
+import { ServiceCategory } from '../models/ServiceCategory';
 
-const BASE_URL = "http://127.0.0.1:8000/api";
-const AUTH_TOKEN = "1|mK29pZHOxqRHlPguX7ANArpqNK5SmmVxKzrE73a93a5d5797";
+const BASE_URL = 'https://eventak.abukm.com/api';
+const AUTH_TOKEN = '15|9PYfYdFWh9rFuluRPW0Uxx4YvXPlGCXv50SIXyoU9c0cce61';
 
 // ─── Dummy Data (Fallback) ───────────────────────────────────────────────────
 const generateDummyCategories = () => [
-  new ServiceCategory({
-    id: 1,
-    name: "تنسيق قاعات",
-    description: "تزيين وطاولات وإضاءة",
-  }),
-  new ServiceCategory({
-    id: 2,
-    name: "تصوير فوتوغرافي",
-    description: "تصوير احترافي وفيديو للفعاليات",
-  }),
-  new ServiceCategory({
-    id: 3,
-    name: "خدمات تموين",
-    description: "وجبات وبوفيهات ومشروبات",
-  }),
-  new ServiceCategory({
-    id: 4,
-    name: "ديكور وزهور",
-    description: "تنسيقات زهور طبيعية وصناعية",
-  }),
-  new ServiceCategory({
-    id: 5,
-    name: "صوت وإضاءة",
-    description: "أنظمة صوتية وإضاءة مسرحية",
-  }),
-  new ServiceCategory({
-    id: 6,
-    name: "نقل ومواصلات",
-    description: "خدمات نقل الضيوف والباصات",
-  }),
-  new ServiceCategory({
-    id: 7,
-    name: "حراسة أمنية",
-    description: "فريق حراسة وتنظيم دخول",
-  }),
-  new ServiceCategory({
-    id: 8,
-    name: "طباعة ومطبوعات",
-    description: "دعوات وبطاقات ولافتات",
-  }),
+  new ServiceCategory({ id: 1, name: 'تنسيق قاعات', description: 'تزيين وطاولات وإضاءة' }),
+  new ServiceCategory({ id: 2, name: 'تصوير فوتوغرافي', description: 'تصوير احترافي وفيديو للفعاليات' }),
+  new ServiceCategory({ id: 3, name: 'خدمات تموين', description: 'وجبات وبوفيهات ومشروبات' }),
+  new ServiceCategory({ id: 4, name: 'ديكور وزهور', description: 'تنسيقات زهور طبيعية وصناعية' }),
+  new ServiceCategory({ id: 5, name: 'صوت وإضاءة', description: 'أنظمة صوتية وإضاءة مسرحية' }),
+  new ServiceCategory({ id: 6, name: 'نقل ومواصلات', description: 'خدمات نقل الضيوف والباصات' }),
+  new ServiceCategory({ id: 7, name: 'حراسة أمنية', description: 'فريق حراسة وتنظيم دخول' }),
+  new ServiceCategory({ id: 8, name: 'طباعة ومطبوعات', description: 'دعوات وبطاقات ولافتات' }),
 ];
 
 let dummyCategories = generateDummyCategories();
@@ -52,9 +20,9 @@ let nextDummyId = 9;
 
 // ─── Fetch Helper ────────────────────────────────────────────────────────────
 const getHeaders = () => ({
-  Accept: "application/json",
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${AUTH_TOKEN}`,
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${AUTH_TOKEN}`,
 });
 
 // ─── Service ──────────────────────────────────────────────────────────────────
@@ -65,19 +33,18 @@ export const serviceCategoryService = {
   getAll: async () => {
     try {
       const response = await fetch(`${BASE_URL}/admin/service-categories`, {
-        method: "GET",
+        method: 'GET',
         headers: getHeaders(),
       });
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const json = await response.json();
-      if (json?.status !== "success")
-        throw new Error(json?.message || "Non-success response");
+      if (json?.status !== 'success') throw new Error(json?.message || 'Non-success response');
 
       return ServiceCategory.fromApiResponse(json);
     } catch (error) {
-      console.warn("API fetch failed, using dummy categories:", error.message);
+      console.warn('API fetch failed, using dummy categories:', error.message);
       return [...dummyCategories];
     }
   },
@@ -88,12 +55,9 @@ export const serviceCategoryService = {
   create: async (data) => {
     try {
       const response = await fetch(`${BASE_URL}/admin/service-categories`, {
-        method: "POST",
+        method: 'POST',
         headers: getHeaders(),
-        body: JSON.stringify({
-          name: data.name.trim(),
-          description: data.description?.trim() || "",
-        }),
+        body: JSON.stringify({ name: data.name.trim(), description: data.description?.trim() || '' }),
       });
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -101,11 +65,11 @@ export const serviceCategoryService = {
       const json = await response.json();
       return ServiceCategory.fromApi(json?.data ?? json?.category ?? json);
     } catch (error) {
-      console.warn("API create failed, adding to dummy data:", error.message);
+      console.warn('API create failed, adding to dummy data:', error.message);
       const newCat = new ServiceCategory({
         id: nextDummyId++,
         name: data.name.trim(),
-        description: data.description?.trim() || "",
+        description: data.description?.trim() || '',
       });
       dummyCategories.push(newCat);
       return newCat;
@@ -117,30 +81,24 @@ export const serviceCategoryService = {
    */
   update: async (id, data) => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/admin/service-categories/${id}`,
-        {
-          method: "PUT",
-          headers: getHeaders(),
-          body: JSON.stringify({
-            name: data.name.trim(),
-            description: data.description?.trim() || "",
-          }),
-        },
-      );
+      const response = await fetch(`${BASE_URL}/admin/service-categories/${id}`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify({ name: data.name.trim(), description: data.description?.trim() || '' }),
+      });
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const json = await response.json();
       return ServiceCategory.fromApi(json?.data ?? json?.category ?? json);
     } catch (error) {
-      console.warn("API update failed, updating dummy data:", error.message);
-      const idx = dummyCategories.findIndex((c) => c.id === id);
-      if (idx === -1) throw new Error("notFound");
+      console.warn('API update failed, updating dummy data:', error.message);
+      const idx = dummyCategories.findIndex(c => c.id === id);
+      if (idx === -1) throw new Error('notFound');
       dummyCategories[idx] = new ServiceCategory({
         ...dummyCategories[idx],
         name: data.name.trim(),
-        description: data.description?.trim() || "",
+        description: data.description?.trim() || '',
       });
       return dummyCategories[idx];
     }
@@ -151,24 +109,18 @@ export const serviceCategoryService = {
    */
   delete: async (id) => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/admin/service-categories/${id}`,
-        {
-          method: "DELETE",
-          headers: getHeaders(),
-        },
-      );
+      const response = await fetch(`${BASE_URL}/admin/service-categories/${id}`, {
+        method: 'DELETE',
+        headers: getHeaders(),
+      });
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       return true;
     } catch (error) {
-      console.warn(
-        "API delete failed, removing from dummy data:",
-        error.message,
-      );
-      const idx = dummyCategories.findIndex((c) => c.id === id);
-      if (idx === -1) throw new Error("notFound");
+      console.warn('API delete failed, removing from dummy data:', error.message);
+      const idx = dummyCategories.findIndex(c => c.id === id);
+      if (idx === -1) throw new Error('notFound');
       dummyCategories.splice(idx, 1);
       return true;
     }

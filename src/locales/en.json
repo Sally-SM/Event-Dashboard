@@ -35,7 +35,9 @@
     "payments": "Payments",
     "vendorRequests": "Vendor Requests",
     "venueOwnerRequests": "Venue Owner Requests",
-    "serviceCategories": "Service Categories"
+    "serviceCategories": "Service Categories",
+    "activeVenues": "Active Venues",
+    "servicesByCategory": "Services by Category"
   },
   "dashboard": {
     "welcome": "Welcome to Dashboard",
@@ -46,13 +48,17 @@
     "eventsByMonth": "Events created and their status by month",
     "recentEvents": "Recent Events",
     "noDataAvailable": "No data available",
-    "noEventsFound": "No events found"
+    "noEventsFound": "No events found",
+    "monthlyRevenue": "Monthly Revenue (Confirmed Events)",
+    "revenue": "Revenue"
   },
   "stats": {
     "totalEvents": "Total Events",
     "pendingEvents": "Pending Events",
     "approvedEvents": "Approved Events",
-    "rejectedEvents": "Rejected Events"
+    "rejectedEvents": "Rejected Events",
+    "confirmedEvents": "Confirmed Events",
+    "totalRevenue": "Total Revenue"
   },
   "table": {
     "eventName": "Event Name",
@@ -74,7 +80,8 @@
   "status": {
     "pending": "Pending",
     "confirmed": "Approved",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "approved": "Confirmed"
   },
   "events": {
     "title": "Events Management",
@@ -502,12 +509,15 @@
     "cancelRejectBtn": "Cancel",
     "rejectionReasonDisplay": "Rejection Reason",
     "approve": "Approve",
-    "reject": "Reject"
+    "reject": "Reject",
+    "confirmApproveDelete": "Are you sure you want to approve this service and cancel the deletion request?"
   },
   "vendorRequestStatus": {
     "pending": "Pending",
     "approved": "Approved",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "pendingDelete": "Pending Delete",
+    "inactive": "Inactive"
   },
   "venueOwnerRequests": {
     "title": "Venue Owner Requests",
@@ -557,7 +567,25 @@
     "role": "Role",
     "joinedAt": "Joined",
     "emailVerified": "Email Verified",
-    "emailNotVerified": "Email Not Verified"
+    "emailNotVerified": "Email Not Verified",
+    "addUser": "Add User",
+    "addUserTitle": "Create New User",
+    "nameLabel": "Full Name",
+    "namePlaceholder": "e.g., Sally",
+    "nameRequired": "Name is required",
+    "nameMinLength": "Name must be at least 2 characters",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "e.g., Sally@example.com",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "phoneLabel": "Phone Number",
+    "phonePlaceholder": "e.g., +96399999999",
+    "phoneRequired": "Phone number is required",
+    "roleLabel": "Role",
+    "roleRequired": "Please select a role",
+    "submitCreate": "Create User",
+    "cancelBtn": "Cancel",
+    "createSuccess": "User created successfully"
   },
   "serviceCategories": {
     "title": "Service Categories",
@@ -580,5 +608,33 @@
     "deleteSuccess": "Category deleted successfully",
     "nameRequired": "Category name is required",
     "nameMinLength": "Name must be at least 2 characters"
+  },
+  "activeVenues": {
+    "title": "Active Venues",
+    "subtitle": "Browse all approved and active venues on the platform",
+    "searchPlaceholder": "Search by venue name, address, or owner...",
+    "noVenuesFound": "No active venues found",
+    "tryAdjusting": "Try adjusting your search criteria",
+    "capacity": "Capacity",
+    "pricePerDay": "Price / Day",
+    "address": "Address",
+    "owner": "Owner",
+    "description": "Description",
+    "viewDetails": "View Details",
+    "totalActive": "{{count}} active venues",
+    "joinedAt": "Listed since"
+  },
+  "servicesByCategory": {
+    "title": "Services by Category",
+    "subtitle": "Browse all available services organized by category",
+    "searchPlaceholder": "Search services or vendors...",
+    "noCategories": "No service categories found",
+    "noServicesInCategory": "No services in this category",
+    "servicesCount": "{{count}} services",
+    "priceFrom": "From {{price}} SYR",
+    "vendor": "Vendor",
+    "serviceDescription": "Description",
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All"
   }
 }
