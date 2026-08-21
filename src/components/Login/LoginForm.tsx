@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { authApi } from '../../services/api';
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { authApi } from "../../services/api";
 
 const LoginForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false
+    email: "",
+    password: "",
+    rememberMe: false,
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -18,13 +18,13 @@ const LoginForm = () => {
     const newErrors = {};
 
     if (!formData.email) {
-      newErrors.email = t('common.requiredField');
+      newErrors.email = t("common.requiredField");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = t('common.invalidEmail');
+      newErrors.email = t("common.invalidEmail");
     }
 
     if (!formData.password) {
-      newErrors.password = t('common.requiredField');
+      newErrors.password = t("common.requiredField");
     }
 
     setErrors(newErrors);
@@ -33,16 +33,16 @@ const LoginForm = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
@@ -59,22 +59,25 @@ const LoginForm = () => {
       const response = await authApi.login(formData.email, formData.password);
 
       // Store token from API response
-      if (response.token) {
-        localStorage.setItem('authToken', response.token);
+      if (response.data.token) {
+        localStorage.setItem("authToken", response.data.token);
       }
 
       // Navigate to dashboard on success
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
 
       // Map API errors to form fields or show general error
-      if (error.message.includes('email') || error.message.includes('credentials')) {
-        setErrors({ submit: t('common.loginError') });
-      } else if (error.message.includes('password')) {
+      if (
+        error.message.includes("email") ||
+        error.message.includes("credentials")
+      ) {
+        setErrors({ submit: t("common.loginError") });
+      } else if (error.message.includes("password")) {
         setErrors({ password: error.message });
       } else {
-        setErrors({ submit: error.message || t('common.loginError') });
+        setErrors({ submit: error.message || t("common.loginError") });
       }
     } finally {
       setIsLoading(false);
@@ -85,10 +88,10 @@ const LoginForm = () => {
     <div className="w-full max-w-md mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          {t('login.welcomeBack')}
+          {t("login.welcomeBack")}
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          {t('login.description')}
+          {t("login.description")}
         </p>
       </div>
 
@@ -99,7 +102,7 @@ const LoginForm = () => {
             htmlFor="email"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
           >
-            {t('common.email')}
+            {t("common.email")}
           </label>
           <input
             type="email"
@@ -107,12 +110,12 @@ const LoginForm = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder={t('common.emailPlaceholder')}
+            placeholder={t("common.emailPlaceholder")}
             disabled={isLoading}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.email
-                ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
             } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
           />
           {errors.email && (
@@ -126,7 +129,7 @@ const LoginForm = () => {
             htmlFor="password"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
           >
-            {t('common.password')}
+            {t("common.password")}
           </label>
           <input
             type="password"
@@ -134,12 +137,12 @@ const LoginForm = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder={t('common.passwordPlaceholder')}
+            placeholder={t("common.passwordPlaceholder")}
             disabled={isLoading}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.password
-                ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
             } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
           />
           {errors.password && (
@@ -159,7 +162,7 @@ const LoginForm = () => {
               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 disabled:opacity-50"
             />
             <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-              {t('common.rememberMe')}
+              {t("common.rememberMe")}
             </span>
           </label>
           <button
@@ -167,14 +170,16 @@ const LoginForm = () => {
             disabled={isLoading}
             className="text-sm text-blue-600 dark:text-blue-400 hover:underline disabled:opacity-50"
           >
-            {t('common.forgotPassword')}
+            {t("common.forgotPassword")}
           </button>
         </div>
 
         {/* Submit Error */}
         {errors.submit && (
           <div className="p-3 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 rounded-lg">
-            <p className="text-sm text-red-700 dark:text-red-400">{errors.submit}</p>
+            <p className="text-sm text-red-700 dark:text-red-400">
+              {errors.submit}
+            </p>
           </div>
         )}
 
@@ -186,10 +191,7 @@ const LoginForm = () => {
         >
           {isLoading ? (
             <div className="flex items-center justify-center">
-              <svg
-                className="animate-spin h-5 w-5 mr-2"
-                viewBox="0 0 24 24"
-              >
+              <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
                 <circle
                   className="opacity-25"
                   cx="12"
@@ -205,10 +207,10 @@ const LoginForm = () => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              {t('common.signIn')}...
+              {t("common.signIn")}...
             </div>
           ) : (
-            t('common.signIn')
+            t("common.signIn")
           )}
         </button>
       </form>
